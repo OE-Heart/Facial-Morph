@@ -10,8 +10,6 @@ output_img_path = "images/output.jpg"
 def face_landmark_detection(image, predictor_model):
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(predictor_model)
-
-    win = dlib.image_window()
     
     img = image
     img_height = img.shape[0]
@@ -19,6 +17,7 @@ def face_landmark_detection(image, predictor_model):
     print("img_height = ", img_height)
     print("img_width = ", img_width)
 
+    win = dlib.image_window()
     win.clear_overlay()
     win.set_image(img)
 
@@ -31,7 +30,6 @@ def face_landmark_detection(image, predictor_model):
         # Get the landmarks/parts for the face in box d.
         shape = predictor(img, d)
         for num in range(shape.num_parts):
-            # cv2.circle(frame, (shape.parts()[num].x, shape.parts()[num].y), 3, (255, 0, 0), -1)
             points[num][0] = int(shape.parts()[num].x)
             points[num][1] = int(shape.parts()[num].y)
         print("Part 0: {}, Part 1: {} ...".format(shape.part(0),
@@ -125,12 +123,12 @@ def facial_morph(input_img_path, output_img_path):
             img_tri_affine(input_img, input_img_t, input_img_grid_points, mid_grid_points)
             img_tri_affine(output_img, output_img_t, output_img_grid_points, mid_grid_points)
 
-        res_image_t = input_img_t[0:651, :, :] * (1-t)/255 + output_img_t[0:651, :, :] * t/255
+        mid_img = input_img_t[0:651, :, :] * (1-t)/255 + output_img_t[0:651, :, :] * t/255
         
         title = "Facial Morph"
         cv2.namedWindow(title, 0)
         cv2.resizeWindow(title, input_img.shape[1]+20, input_img.shape[0]+20)
-        cv2.imshow(title, res_image_t)
+        cv2.imshow(title, mid_img)
         cv2.waitKey(50)
         
         t += 1.0 / duration
