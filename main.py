@@ -73,7 +73,7 @@ def img_tri_affine(img1, img2, tri1, tri2) :
         tri1Cropped.append(((tri1[i][0] - r1[0]),(tri1[i][1] - r1[1])))
         tri2Cropped.append(((tri2[i][0] - r2[0]),(tri2[i][1] - r2[1])))
  
-    # Crop input image
+    # Apply warpImage to small rectangular patches
     img1Cropped = img1[r1[1]:r1[1] + r1[3], r1[0]:r1[0] + r1[2]]
  
     # Given a pair of triangles, find the affine transform.
@@ -89,8 +89,8 @@ def img_tri_affine(img1, img2, tri1, tri2) :
     img2Cropped = img2Cropped * mask
     
     # Copy triangular region of the rectangular patch to the output image
-    img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] = img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]]  * ( (1.0, 1.0, 1.0) - mask )  
-    img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] = img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]]  + img2Cropped
+    img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] = img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]]*((1.0, 1.0, 1.0)-mask)  
+    img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]] = img2[r2[1]:r2[1]+r2[3], r2[0]:r2[0]+r2[2]]+img2Cropped
 
 def facial_morph(input_img_path, output_img_path):
     input_img_points, input_img_grid = facial_gridding(input_img_path)
